@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Lucky17 V2.1 (Fix)</title>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-bg: #1c1c1e;
+            --text-main: #f2f2f7;
+            --accent-cyan: #64d2ff;
+            --accent-gold: #ffd60a;
+            --accent-silver: #aeaeb2;
+            --accent-purple: #bf5af2;
+            --accent-danger: #ff453a;
+            --accent-special: #ff2d55;
+            --input-bg: #2c2c2e;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: var(--text-main);
+            font-size: 1.5rem;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .card-panel {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+
+        .panel-title {
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            background: var(--input-bg);
+            border: 2px solid #444;
+            color: white;
+            font-size: 1.2rem;
+            width: 50px;
+            text-align: center;
+            border-radius: 12px;
+            padding: 10px;
+            outline: none;
+            transition: all 0.3s;
+            font-weight: bold;
+            -moz-appearance: textfield;
+        }
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .btn-primary {
+            background: var(--accent-cyan);
+            color: black;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .btn-secondary {
+            background: #3a3a3c;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .verify-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .verify-grid input {
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 1rem;
+            padding: 8px 0;
+        }
+
+        .special-input-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #333;
+        }
+
+        .special-label {
+            font-size: 0.8rem;
+            color: var(--accent-special);
+            font-weight: bold;
+        }
+
+        .input-special {
+            border-color: var(--accent-special) !important;
+            color: var(--accent-special) !important;
+        }
+
+        .group-card {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border-left: 3px solid #444;
+        }
+
+        .group-info { width: 100%; }
+        .group-idx { font-size: 0.7rem; color: #636366; margin-bottom: 4px; font-weight: 600; display: flex; justify-content: space-between;}
+        .group-nums {
+            font-family: 'SF Mono', 'Menlo', monospace;
+            font-size: 1.15rem;
+            letter-spacing: -0.5px;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .group-nums span {
+            width: 24px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .hit-normal {
+            color: var(--accent-gold);
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(255, 214, 10, 0.3);
+            border-bottom: 2px solid var(--accent-gold);
+        }
+
+        .hit-special {
+            background-color: var(--accent-special);
+            color: white;
+            font-weight: 900;
+            box-shadow: 0 0 15px rgba(255, 45, 85, 0.6);
+        }
+
+        .status-bar {
+            font-size: 0.75rem;
+            color: #888;
+            text-align: center;
+            margin-bottom: 15px;
+            font-family: monospace;
+        }
+
+        .hidden { display: none !important; }
+        
+        .win-badge {
+            background: var(--accent-gold);
+            color: black;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+        }
+
+        #winningReport {
+            border: 2px solid var(--accent-gold);
+            background: rgba(28, 28, 30, 0.8);
+        }
+
+        /* 緊急重置按鈕 */
+        .panic-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 0.7rem;
+            color: #555;
+            text-decoration: underline;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="panic-btn" onclick="forceReset()">緊急重置</div>
+
+    <h1>Lucky17</h1>
+    <div class="subtitle">V2.1 STABLE</div>
+
+    <!-- 錯誤提示 -->
+    <div id="globalError" class="card-panel hidden" style="border-color: var(--accent-danger);">
+        <div style="color: var(--accent-danger); font-weight: bold;">發生錯誤</div>
+        <div id="globalErrorMsg" style="font-size: 0.8rem; margin: 10px 0;"></div>
+        <button class="btn-secondary" onclick="forceReset()">清除數據並重試</button>
+    </div>
+
+    <!-- 狀態 1: 生成模式 -->
+    <div id="generateSection" class="card-panel hidden">
+        <div class="panel-title">啟動新一輪預測</div>
+        <label style="display:block; color:#888; font-size:0.8rem; margin-bottom:10px;">輸入核心王者 (1-49)</label>
+        <div class="input-wrapper">
+            <input type="number" id="userKing" min="1" max="49" placeholder="37">
+        </div>
+        <button class="btn-primary" onclick="runSystem()">生成並鎖定</button>
+        <div id="errorMsg" style="color:var(--accent-danger); font-size:0.8rem; margin-top:10px; display:none;">無效的數字</div>
+    </div>
+
+    <!-- 狀態 2: 核對模式 -->
+    <div id="verifySection" class="card-panel hidden">
+        <div class="panel-title">系統已鎖定</div>
+        <div class="status-bar" id="saveDateDisplay"></div>
+        
+        <div style="text-align:left; font-size:0.8rem; color:#aaa; margin-bottom:8px;">輸入開獎號碼 (6平 + 1特):</div>
+        
+        <div class="verify-grid">
+            <input type="number" class="v-num" placeholder="-" maxlength="2">
+            <input type="number" class="v-num" placeholder="-" maxlength="2">
+            <input type="number" class="v-num" placeholder="-" maxlength="2">
+            <input type="number" class="v-num" placeholder="-" maxlength="2">
+            <input type="number" class="v-num" placeholder="-" maxlength="2">
+            <input type="number" class="v-num" placeholder="-" maxlength="2">
+        </div>
+        <div class="special-input-container">
+            <span class="special-label">特別號</span>
+            <input type="number" id="v-special" class="input-special" placeholder="SP" maxlength="2">
+        </div>
+
+        <button class="btn-primary" onclick="verifyNumbers()">核對開獎</button>
+        <button class="btn-secondary" onclick="resetSystem()">放棄並重置</button>
+    </div>
+
+    <!-- 結果展示區域 -->
+    <div id="resultsArea" class="hidden">
+        
+        <!-- 中獎報告 -->
+        <div id="winningReport" class="card-panel hidden">
+            <div class="panel-title">中獎分析報告</div>
+            <div id="winList"></div>
+            <div id="noWinMsg" style="font-size:0.9rem; color:#888; padding:10px;">本期未發現符合條件(3平或以上)的組合。</div>
+            <button class="btn-primary" style="background:var(--accent-silver)" onclick="resetSystem()">開啟下一輪</button>
+        </div>
+
+        <!-- 所有組合列表 -->
+        <div style="margin-top:30px; border-top:1px solid #333; padding-top:20px;">
+            <div style="text-align:center; color:#666; font-size:0.8rem; margin-bottom:15px;">完整預測記錄 (17組)</div>
+            <div id="fullList"></div>
+        </div>
+    </div>
+
+    <script>
+        const INNER_CIRCLE_BASE = [17, 18, 19, 24, 25, 26, 31, 32, 33];
+        const STORAGE_KEY = 'lucky17_v2_data';
+
+        // 強制重置
+        function forceReset() {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        }
+
+        // 初始化檢查
+        window.onload = function() {
+            try {
+                checkStorage();
+            } catch (e) {
+                console.error(e);
+                document.getElementById('globalError').classList.remove('hidden');
+                document.getElementById('globalErrorMsg').innerText = "數據讀取錯誤，請點擊下方按鈕重置。";
+                document.getElementById('generateSection').classList.add('hidden');
+            }
+        }
+
+        function checkStorage() {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (savedData) {
+                let data;
+                try {
+                    data = JSON.parse(savedData);
+                } catch (e) {
+                    throw new Error("Corrupted Data");
+                }
+                
+                // 簡單的數據完整性檢查
+                if (!data.sets || data.sets.length !== 17) {
+                    throw new Error("Invalid Data Structure");
+                }
+                
+                showVerifyMode(data);
+            } else {
+                showGenerateMode();
+            }
+        }
+
+        function showGenerateMode() {
+            document.getElementById('generateSection').classList.remove('hidden');
+            document.getElementById('verifySection').classList.add('hidden');
+            document.getElementById('resultsArea').classList.add('hidden');
+        }
+
+        function showVerifyMode(data) {
+            document.getElementById('generateSection').classList.add('hidden');
+            document.getElementById('verifySection').classList.remove('hidden');
+            document.getElementById('resultsArea').classList.remove('hidden');
+            
+            const date = new Date(data.timestamp);
+            document.getElementById('saveDateDisplay').innerText = `生成時間: ${date.toLocaleString('zh-TW')}`;
+            
+            renderFullList(data.sets, [], null);
+        }
+
+        // --- 核心邏輯: 生成 ---
+        function runSystem() {
+            try {
+                const input = document.getElementById('userKing');
+                let kingNum = parseInt(input.value);
+
+                if (isNaN(kingNum) || kingNum < 1 || kingNum > 49) {
+                    document.getElementById('errorMsg').style.display = 'block';
+                    return;
+                }
+
+                // 生成所有數據
+                const allSets = generateAllSets(kingNum);
+                
+                // 存檔
+                const dataToSave = {
+                    timestamp: Date.now(),
+                    king: kingNum,
+                    sets: allSets
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+
+                // 切換介面
+                checkStorage();
+            } catch (e) {
+                alert("生成過程發生錯誤: " + e.message);
+                console.error(e);
+            }
+        }
+
+        function generateAllSets(kingNum) {
+            let allSets = [];
+
+            // P1 (8組)
+            const p1 = generatePhase1(kingNum);
+            allSets.push(...p1);
+
+            // P2 (1組)
+            const p2 = generateSpecialSet(kingNum);
+            allSets.push(p2);
+
+            // P3 (7組) + P4 (1組)
+            const p3Data = generatePhase3_Fixed(p2, kingNum);
+            allSets.push(...p3Data.sets);
+            
+            const p4 = generatePhase4(p3Data.leftovers);
+            allSets.push(p4);
+
+            return allSets;
+        }
+
+        // --- 核心邏輯: 核對 ---
+        function verifyNumbers() {
+            const vInputs = document.querySelectorAll('.v-num');
+            const vSpecialInput = document.getElementById('v-special');
+            
+            let winningNormals = [];
+            vInputs.forEach(inp => {
+                if(inp.value) winningNormals.push(parseInt(inp.value));
+            });
+            
+            let winningSpecial = parseInt(vSpecialInput.value);
+
+            if (winningNormals.length !== 6 || isNaN(winningSpecial)) {
+                alert("請完整輸入 6 個平碼和 1 個特別號");
+                return;
+            }
+
+            const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+            const sets = savedData.sets;
+
+            document.getElementById('verifySection').classList.add('hidden');
+            document.getElementById('winningReport').classList.remove('hidden');
+
+            let winningSets = [];
+            
+            sets.forEach((set, index) => {
+                let normalHits = set.filter(n => winningNormals.includes(n));
+                let specialHit = set.includes(winningSpecial);
+                
+                if (normalHits.length >= 3) {
+                    winningSets.push({
+                        index: index + 1,
+                        nums: set,
+                        normalHits: normalHits,
+                        specialHit: specialHit
+                    });
+                }
+            });
+
+            renderWinningReport(winningSets, winningNormals, winningSpecial);
+            renderFullList(sets, winningNormals, winningSpecial);
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderWinningReport(winners, wNormals, wSpecial) {
+            const container = document.getElementById('winList');
+            const noWinMsg = document.getElementById('noWinMsg');
+            container.innerHTML = '';
+
+            if (winners.length === 0) {
+                noWinMsg.style.display = 'block';
+                return;
+            }
+
+            noWinMsg.style.display = 'none';
+
+            winners.forEach(win => {
+                let card = document.createElement('div');
+                card.className = 'group-card';
+                card.style.borderColor = 'var(--accent-gold)';
+                card.style.background = 'linear-gradient(90deg, rgba(255, 214, 10, 0.1), rgba(28, 28, 30, 1))';
+
+                let numsHtml = win.nums.map(n => {
+                    if (n === wSpecial) return `<span class="hit-special">${pad(n)}</span>`;
+                    if (wNormals.includes(n)) return `<span class="hit-normal">${pad(n)}</span>`;
+                    return `<span style="opacity:0.3">${pad(n)}</span>`;
+                }).join('');
+
+                let badgeText = `${win.normalHits.length}平`;
+                if (win.specialHit) badgeText += ` + 1特`;
+
+                card.innerHTML = `
+                    <div class="group-info">
+                        <span class="group-idx" style="color:var(--accent-gold)">
+                            GROUP ${win.index} 
+                            <span class="win-badge">${badgeText}</span>
+                        </span>
+                        <div class="group-nums">${numsHtml}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderFullList(sets, wNormals, wSpecial) {
+            const container = document.getElementById('fullList');
+            container.innerHTML = '';
+
+            sets.forEach((set, index) => {
+                let card = document.createElement('div');
+                card.className = 'group-card';
+                if (index === 16) card.style.borderLeftColor = 'var(--accent-purple)';
+
+                let numsHtml = set.map(n => {
+                    if (wSpecial !== null && n === wSpecial) return `<span class="hit-special">${pad(n)}</span>`;
+                    if (wNormals.includes(n)) return `<span class="hit-normal">${pad(n)}</span>`;
+                    return `<span>${pad(n)}</span>`;
+                }).join('');
+
+                card.innerHTML = `
+                    <div class="group-info">
+                        <span class="group-idx">GROUP ${index + 1}</span>
+                        <div class="group-nums">${numsHtml}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function resetSystem() {
+            if(confirm('確定要刪除當前記錄並開始新的一輪嗎？')) {
+                forceReset();
+            }
+        }
+
+        // --- 輔助與生成算法 ---
+        function pad(num) { return num.toString().padStart(2, '0'); }
+        function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } }
+        
+        // 修復後的 Phase 1: 防止號碼池耗盡導致崩潰
+        function generatePhase1(kingNum) {
+            let sets = Array.from({length: 8}, () => []);
+            
+            // 1. 分配核心號碼 (Inner Circle)
+            let innerPool = INNER_CIRCLE_BASE.filter(n => n !== kingNum);
+            shuffleArray(innerPool);
+            
+            // 每個 set 分一個
+            for(let i=0; i<8; i++) { 
+                if(innerPool.length > 0) sets[i].push(innerPool.pop()); 
+            }
+            // 如果還有剩 (例如 King 不在 Inner 裡，剩 9 個)，隨機給一組
+            if(innerPool.length > 0) { 
+                let luckyIndex = Math.floor(Math.random() * 8); 
+                sets[luckyIndex].push(innerPool.pop()); 
+            }
+
+            // 2. 準備外部號碼池
+            // 這裡我們創建一個函數來獲取完整的外部號碼，當池子空了就重新調用
+            function getFullOuterPool() {
+                let pool = [];
+                for (let i = 1; i <= 49; i++) { 
+                    if (i !== kingNum && !INNER_CIRCLE_BASE.includes(i)) pool.push(i); 
+                }
+                return pool;
+            }
+
+            let outerPool = getFullOuterPool();
+            shuffleArray(outerPool);
+
+            // 3. 填充剩餘空位
+            for (let i = 0; i < 8; i++) {
+                while (sets[i].length < 6) {
+                    // 如果外部池空了，重新填充並打亂 (防止死循環)
+                    if (outerPool.length === 0) {
+                        outerPool = getFullOuterPool();
+                        shuffleArray(outerPool);
+                    }
+
+                    // 取出一個號碼
+                    let candidate = outerPool.pop();
+
+                    // 確保該號碼不在當前這一組中 (避免同組重複)
+                    if (!sets[i].includes(candidate)) {
+                        sets[i].push(candidate);
+                    } else {
+                        // 如果重複了，放回池底 (或者直接丟棄取下一個，這裡選擇丟棄取下一個循環)
+                        // 為了簡單，我們不做任何事，讓循環繼續，下次會取新的
+                        // 但為了不浪費 candidate，如果池子還夠大，可以 unshift 回去
+                        if (outerPool.length > 0) {
+                            outerPool.unshift(candidate);
+                            shuffleArray(outerPool); // 重新打亂一下避免死鎖
+                        }
+                    }
+                }
+                sets[i].sort((a, b) => a - b);
+            }
+            return sets;
+        }
+
+        function generateSpecialSet(kingNum) {
+            let result = [kingNum];
+            let pool = [];
+            for(let i=1; i<=49; i++) { if(i !== kingNum) pool.push(i); }
+            shuffleArray(pool);
+            let randomFive = pool.slice(0, 5);
+            result = result.concat(randomFive);
+            result.sort((a, b) => a - b);
+            return result;
+        }
+
+        function generatePhase3_Fixed(specialSet, kingNum) {
+            const partners = specialSet.filter(n => n !== kingNum);
+            let pool = [];
+            // 排除 partners
+            for (let i = 1; i <= 49; i++) { if (!partners.includes(i)) pool.push(i); }
+            shuffleArray(pool);
+            
+            // 需要 42 個號碼給 7 組
+            const selected42 = pool.slice(0, 42);
+            const leftovers = pool.slice(42); // 剩下的給 Phase 4
+            
+            let sets = [];
+            for (let i = 0; i < 7; i++) { 
+                let chunk = selected42.slice(i * 6, (i + 1) * 6); 
+                chunk.sort((a, b) => a - b); 
+                sets.push(chunk); 
+            }
+            return { sets: sets, leftovers: leftovers };
+        }
+
+        function generatePhase4(leftovers) {
+            let pool = [];
+            // 修正: i <= 49 (之前是 48，導致少一個號碼可能)
+            for (let i = 1; i <= 49; i++) { 
+                if (!leftovers.includes(i)) pool.push(i); 
+            }
+            shuffleArray(pool);
+            
+            // 需要補齊到 6 個
+            let needed = 6 - leftovers.length;
+            let randomFill = pool.slice(0, needed);
+            
+            let finalSet = [...leftovers, ...randomFill];
+            finalSet.sort((a, b) => a - b);
+            return finalSet;
+        }
+    </script>
+</body>
+</html>
